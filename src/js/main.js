@@ -1905,7 +1905,7 @@ function loadelements() {
     for (i = 0; i < hiddenelements.length; i++) {
       hiddenelements[i].style.display = "";
     }
-    shortparameter = true;
+    shortparameter = false;
     document.getElementById("shortatt").style.display = "none";
     document.getElementById("shortdef").style.display = "none";
     document.getElementById("shortlink").style.display = "";
