@@ -2,21 +2,21 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" href="src/img/Other/SmallSwords.png?v=2" type="image/png" />
-  <link rel="apple-touch-icon" href="src/img/Other/BigSwords.png?v=2" type="image/png" />
+  <link rel="icon" href="/src/img/Other/SmallSwords.png?v=2" type="image/png" />
+  <link rel="apple-touch-icon" href="/src/img/Other/crown.png" type="image/png" />
 
   <meta charset="UTF-8" />
   <meta name="description"
     content="Welcome to the unofficial Polytopia battle calculator! Try out a variety of combat situations and see what the end result is going to be." />
-  <meta name="author" content="FrothFrenzy" />
+  <meta name="author" content="jd (alphaSeahorse), FrothFrenzy" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta property="og:url" content="https://frothfrenzy.github.io/polytopiacalculator/" />
+  <meta property="og:url" content="https://frothfrenzy.polycalculatorbot.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Polytopia Battle Calculator" />
   <meta property="og:description"
     content="Welcome to the unofficial Polytopia battle calculator! Try out a variety of combat situations and see what the end result is going to be." />
-  <meta property="og:image" content="https://frothfrenzy.github.io/polytopiacalculator/src/img/Other/BigSwords.png" />
+  <meta property="og:image" content="src/img/Other/crown.png" />
 
   <title>Polytopia Battle Calculator</title>
   <link rel="stylesheet" href="src/css/main.css">
@@ -25,15 +25,15 @@
 <body onload="loadelements()">
   <noscript>
     <h2>Polytopia Battle Calculator</h2>
-    <i style="display: inline-block">(by FrothFrenzy)</i>
+    <i style="display: inline-block">(by FrothFrenzy, taken over by @jd#0001 (alphaSeahorse))</i>
     <p>Javascript is required to use the calculator!</p>
     <p>If you are worried about potential security issues, you can always review the code at the project's <a
-        href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/index.html">GitHub repository</a>.</p>
+        href="https://github.com/veerjd/polytopiacalculator">GitHub repository</a>.</p>
   </noscript>
   <div id="main" style="visibility: hidden">
     <h2>Polytopia Battle Calculator</h2>
-    <span style="display: inline-block"><i>(by FrothFrenzy)</i>
-      <i id="shortlink">[<a href="https://frothfrenzy.github.io/polytopiacalculator/?short">Short
+    <span style="display: inline-block"><i>(by FrothFrenzy, taken over by @jd#0001 (alphaSeahorse))</i>
+      <i id="shortlink">[<a href="?short">Short
           version</a>]</i></span>
 
     <form id="values" onsubmit="return false"
@@ -162,7 +162,8 @@
             <label id="defshiphp40" class="shiphpcontainer" onclick="defendershiphp(40)">
               <span>40</span>
             </label>
-          </span></p>
+          </span>
+        </p>
 
         <p class="shorthide" id="defvaluetext">Defender defense value: <span id="defenserem"
             style="color: darkgray; visibility: hidden;"></span></p>
@@ -200,7 +201,8 @@
         <button id="deletebutton" type="button" class="mbutton" onclick="deleteunitprompt()" style="display:none">Delete
           Units</button>
         <a class="textpress" id="singlefaq" href="#top" onclick="return show('faq', 'main')" target="_top"
-          style="margin-left: 6px">FAQ</a></p>
+          style="margin-left: 6px">FAQ</a>
+      </p>
     </form>
 
     <p id="attackersheader" style="display:none"><b class="textpress" onclick="refreshattackers()">Attackers:</b></p>
@@ -223,18 +225,13 @@
       <button type="button" class="mbutton" onclick="loadbackup()">Load State</button>
       <button id="healbutton" type="button" class="mbutton" onclick="healunitprompt()">+2</button>
       <a href="#top" class="textpress" onclick="return show('faq', 'main')" target="_top"
-        style="margin-left: 6px">FAQ</a></p>
+        style="margin-left: 6px">FAQ</a>
+    </p>
 
     <div id="resultcontainer" onclick="displayextinfo()" style="max-width: 800px">
       <p><b id="result">Result:</b><span id="respressindicator">&#9679;</span></p>
-      <p id="resultatt"><b><i>12.14.2020: </i></b>This got picked up by Final update from frothfrenzy. Refer to the <a
-          href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/Changelog.md"
-          target="_blank">Changelog</a> for details.<br /><br /><b><i>18.07.2019:</i></b> Added a +2 HP heal button in
-        Multi mode.</p>
-        <p id="resultdef"><b><i>14.08.2019: </i></b>Final update from frothfrenzy. Refer to the <a
-          href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/Changelog.md"
-          target="_blank">Changelog</a> for details.<br /><br /><b><i>18.07.2019:</i></b> Added a +2 HP heal button in
-        Multi mode.</p>
+      <p id="resultatt"><b><i>12.14.2020: </i></b>This got picked up by @jd#0001
+        (alphaSeahorse).<br /><br /><b><i>18.07.2019:</i></b> Added a +2 HP heal button in Multi mode.</p>
       <p id="resultsplash"></p>
       <p id="frozennote" class="i"></p>
       <p id="note" class="i"></p>
@@ -281,7 +278,7 @@
         shortened version of the calculator if you find the attack, defense and max HP prompts unnecessary, or if you
         feel they are taking up too much space. To activate the shortened version, simply add the parameter ?short to
         the end of the calculator's browser URL. Therefore, the end of the URL should look like this:<br /><br /><a
-          href="https://frothfrenzy.github.io/polytopiacalculator/?short">.../polytopiacalculator/?short</a><br /><br />This
+          href="https://frothfrenzy.polycalculatorbot.com/?short">...polycalculatorbot.com/?short</a><br /><br />This
         hides the redundant info. Attack and defense values will be shown in brackets just right of the current HP input
         boxes, while the current HP reminder when tapping or clicking to change values will also contain the max HP
         info. You can add this parameter even if you are running the calculator from a different location.</p>
@@ -360,9 +357,8 @@
         by pressing the text again.<br /><br />Since this mode uses some sprites from the game, the images won't appear
         if you download the calculator to use it offline. You'd have to download the image folders also while preserving
         the pathing context. Just in case, I'll be keeping the old calculator .html file on the Github repository if
-        this update breaks anything (as <a
-          href="https://frothfrenzy.github.io/polytopiacalculator/oldindex.html">oldindex.html</a>). Only Imperius and
-        Xin-Xi sprites will be available out of respect for the developer.<br /><br />The Multi mode uses the same code
+        this update breaks anything. Only Imperius and Xin-Xi sprites will be available out of respect for the
+        developer.<br /><br />The Multi mode uses the same code
         as the original single-battle calculator. This is why you will see the same values being filled and the same
         results being reported as before, even though most of them aren't visible in Multi mode. The battle history is
         also available while in Multi mode with additional info being preserved, including the No retaliation clause and
@@ -580,18 +576,12 @@
         later use. Some mobile browsers like Chrome also support this.<br /><br />
         <i>PC</i>: Go to the calculator website, right-click on any empty space and press Save as... or Save Page As...
         to get the index.html file. Alternatively, you can download the file from my <a
-          href="https://drive.google.com/open?id=0B7HGBGCiKHGkSUExdEs3Q2J1UG8" target="_blank">Google Drive</a> or <a
-          href="https://github.com/frothfrenzy/polytopiacalculator" target="_blank">GitHub</a>. After you downloaded it,
+          href="https://github.com/veerjd/polytopiacalculator" target="_blank">GitHub</a>. After you downloaded it,
         simply drag the .html file into your browser to run the calculator.<br /><br />
         <i>iOS</i>: Repeat the PC process. Download an app called HTML Viewer Q by Spica. Connect your device to iTunes.
         In iTunes, select your device and go to File Sharing. Select HTML Viewer, press Add File and find the .html file
         you downloaded on your PC. Disconnect your device, run HTML Viewer and press on a book-like icon at the bottom
-        right. Switch from Bookmarks to Files and select the downloaded .html file.<br /><br />
-        <i>Android</i>: Either repeat the PC process, or download the Google Drive app to fetch the .html file from my
-        <a href="https://drive.google.com/open?id=0B7HGBGCiKHGkSUExdEs3Q2J1UG8" target="_blank">Google Drive</a>. If you
-        used the PC, connect your device and transfer the .html file to it. If you used Google Drive, the file should be
-        in your Downloads folder. Download the HTML Viewer app by Yogev Haham and run it. Press the paper-like icon at
-        the upper right. Find and select the downloaded .html file, then press the browser view icon in the upper right.
+        right. Switch from Bookmarks to Files and select the downloaded .html file.
       </p>
     </div>
 
@@ -681,16 +671,14 @@
         <a href="https://docs.google.com/document/d/1-FeDFSUGY9ugUPNfTNqqrzzD8vfQ2Is_6FL_-XTrnrc"
           target="_blank">Comprehensive Guide by Gerenuk</a><br /><br />
 
-        <a href="https://drive.google.com/open?id=10vODoFZk-i670i56je_6G-XyZK7qHHEqp7xA-nYW4X8"
-          target="_blank">Challenge List</a><br /><br />
+        <a href="https://github.com/veerjd/polytopiacalculator" target="_blank">My GitHub</a><br /><br />
 
-        <a href="https://github.com/frothfrenzy/polytopiacalculator" target="_blank">My GitHub</a><br /><br />
-
-        <a href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/Changelog.md"
+        <a href="https://github.com/veerjd/polytopiacalculator/blob/master/Changelog.md"
           target="_blank">Changelog</a><br /><br /><br />
 
         <a href="javascript:;" class="textpress" onclick="return show('main', 'faq')" target="_top">&lt;&lt;&lt; Back to
-          the calculator!</a></p><br />
+          the calculator!</a>
+      </p><br />
     </div>
   </div>
   <script src="src/js/main.js"></script>

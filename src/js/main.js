@@ -337,8 +337,11 @@ function calculate(mode) {
         if (isNaN(res) == true) {
           res = 0;
         }
-        if (attname == "Ice Archer" || defname == "Mooni" || defname == "Ice Archer") {
+        if (attname == "Ice Archer" || defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
           res = 0;
+          if (defname == "Mind Bender") {
+            document.getElementById("frozennote").innerHTML = "Mind Bender can't retaliate!";
+          }
           if (defname == "Mooni") {
             document.getElementById("frozennote").innerHTML = "Moonies can't retaliate!";
           }
@@ -381,8 +384,11 @@ function calculate(mode) {
             res = 0;
             document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
           }
-          else if (defname == "Mooni" || defname == "Ice Archer") {
+          else if (defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
             res = 0;
+            if (defname == "Mind Bender" && attackers[attackerselected].defendersattacked.length == 0) {
+              document.getElementById("note").innerHTML = "Mind Benders can't retaliate!";
+            }
             if (defname == "Mooni" && attackers[attackerselected].defendersattacked.length == 0) {
               document.getElementById("note").innerHTML = "Moonies can't retaliate!";
             }
@@ -1893,7 +1899,6 @@ function loadelements() {
     document.getElementById("shortatt").style.display = "inline";
     document.getElementById("shortdef").style.display = "inline";
     document.getElementById("shortlink").style.display = "none";
-    document.getElementById("shorttext").style.display = "none";
   }
 }
 function expandcontainer(identifier) {

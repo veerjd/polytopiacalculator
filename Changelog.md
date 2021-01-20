@@ -1,5 +1,10 @@
 # Changelog
 
+12.14.2020.
+- This just got picked up by @jd#0001 (alphaSeahorse)
+- No more retaliation from Mind Benders
+- Small code refactor to extract js and css from index.html
+
 14.08.2019.
 - This is the last update to the calculator. There comes a time in life where building yourself and your immediate surroundings almost becomes your sole focus, and you somehow become unwilling to do other things you did a lot of before. I've been gaming almost my whole life, but lately I've been noticing that I've been opening games less and less, sometimes going on for weeks without playing - and when I did, usually it was just for a couple of hours. I believe it's time to leave that behind, and I'm sure this inevitably happens to everyone. Well, to most of us at least. I'm sure you understand.
 
@@ -29,7 +34,6 @@
 - Optimized pixel and font sizes so the calculator looks better on a wider variety of devices.
 - All valid clicks or taps now have visible feedback.
 - Changed the FAQ accordingly.
-- Bugs are possible due to the use of new methods. Old version is available at: https://frothfrenzy.github.io/polytopiacalculator/oldindex2.html
 
 26.11.2018.
 - Added a question to the FAQ.
