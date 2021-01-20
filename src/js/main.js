@@ -1887,18 +1887,29 @@ function loadelements() {
   attackerfill();
   defenderfill();
   document.getElementById("main").style.visibility = "visible";
+  var hiddenelements = document.getElementsByClassName("shorthide");
+  var i;
+  for (i = 0; i < hiddenelements.length; i++) {
+    hiddenelements[i].style.display = "none";
+  }
+  shortparameter = true;
+  document.getElementById("shortatt").style.display = "inline";
+  document.getElementById("shortdef").style.display = "inline";
+  document.getElementById("shortlink").style.display = "none";
+  document.getElementById("fulllink").style.display = "";
 
   var queryStr = window.location.search;
-  if (queryStr == "?short") {
+  if (queryStr == "?full") {
     var hiddenelements = document.getElementsByClassName("shorthide");
     var i;
     for (i = 0; i < hiddenelements.length; i++) {
-      hiddenelements[i].style.display = "none";
+      hiddenelements[i].style.display = "";
     }
     shortparameter = true;
-    document.getElementById("shortatt").style.display = "inline";
-    document.getElementById("shortdef").style.display = "inline";
-    document.getElementById("shortlink").style.display = "none";
+    document.getElementById("shortatt").style.display = "none";
+    document.getElementById("shortdef").style.display = "none";
+    document.getElementById("shortlink").style.display = "";
+    document.getElementById("fulllink").style.display = "none";
   }
 }
 function expandcontainer(identifier) {
