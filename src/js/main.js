@@ -1895,8 +1895,8 @@ function loadelements() {
   shortparameter = true;
   document.getElementById("shortatt").style.display = "inline";
   document.getElementById("shortdef").style.display = "inline";
-  document.getElementById("shortlink").style.display = "none";
-  document.getElementById("fulllink").style.display = "";
+  document.getElementById("shortlink").innerHTML = '[<a href="?full">Full version</a>]'
+  // document.getElementById("fulllink").style.display = "";
 
   var queryStr = window.location.search;
   if (queryStr == "?full") {
@@ -1908,8 +1908,8 @@ function loadelements() {
     shortparameter = false;
     document.getElementById("shortatt").style.display = "none";
     document.getElementById("shortdef").style.display = "none";
-    document.getElementById("shortlink").style.display = "";
-    document.getElementById("fulllink").style.display = "none";
+    document.getElementById("shortlink").innerHTML = '[<a href="?short">Short version</a>]'
+    // document.getElementById("fulllink").style.display = "none";
   }
 }
 function expandcontainer(identifier) {
