@@ -32,25 +32,30 @@
         href="https://github.com/veerjd/polytopiacalculator">GitHub repository</a>.</p>
   </noscript>
   <div id="main" style="visibility: hidden">
-    <h2>Polytopia Battle Calculator</h2>
-    <span style="display: inline-block"><i>(by FrothFrenzy, taken over by <a
+    <div id="header" class="bubble">
+      <h2>Polytopia Battle Calculator</h2>
+      <span style="display: inline-block"><i>(by FrothFrenzy, taken over by <a
           href="https://discord.com/channels/@me/217385992837922819">@jd#0001</a>)</i>
-      <i id="shortlink">[<a href="?short">Short
-          version</a>]</i></span>
+        <i id="shortlink">[<a href="?short">Short
+            version</a>]</i></span>
+    </div>
 
     <form id="values" onsubmit="return false"
       onkeypress="if (document.getElementById('multibutton').innerText == 'Single') {return event.keyCode != 13;}">
+      <div id="attvalues" class="bubble">
 
-      <p><label class="creationcontainer" id="createunitbutton" onclick="choosetype()"
-          style="width: 185px; display: none; margin-bottom: 8px;">
-          <span id="unitselect"
-            style="font-size: 17px; padding-left: 1px; padding-top: 4px; padding-bottom: 4px; width: 152px; float: left;">Create
-            Attacker</span><img src="src/img/Other/Switch1.png" alt="Image Switcher" id="switch1" height="20" width="20"
-            style="position: absolute; margin-left: 10px; padding-top: 4px; visibility: visible;"><img
-            src="src/img/Other/Switch2.png" alt="Image Switcher" id="switch2" height="20" width="20"
-            style="position: absolute; margin-left: 10px; padding-top: 4px; visibility: hidden;">
-        </label></p>
-      <div id="attvalues">
+        <p>
+          <label class="creationcontainer" id="createunitbutton" onclick="choosetype()"
+            style="width: 185px; display: none; margin-bottom: 8px;">
+            <span id="unitselect"
+              style="font-size: 17px; padding-left: 1px; padding-top: 4px; padding-bottom: 4px; width: 152px; float: left;">Create
+              Attacker</span>
+            <img src="src/img/Other/Switch1.png" alt="Image Switcher" id="switch1" height="20" width="20"
+              style="position: absolute; margin-left: 10px; padding-top: 4px; visibility: visible;">
+            <img src="src/img/Other/Switch2.png" alt="Image Switcher"   id="switch2" height="20" width="20"
+              style="position: absolute; margin-left: 10px; padding-top: 4px; visibility: hidden;">
+          </label>
+        </p>
         <select id="selectattacker" class="mselect" onchange="attackerfill()" style="position: relative" tabindex="-1">
           <option value="Warrior">Warrior
           <option value="Rider">Rider
@@ -113,7 +118,7 @@
           onfocusout="numberfocusout('attackmaxhp')" min="10" required tabindex="3">
       </div>
 
-      <div id="defvalues" style="display: inline;">
+      <div id="defvalues" class="bubble">
         <p><select id="selectdefender" class="mselect" onchange="defenderfill()" style="position: relative"
             tabindex="-4">
             <option value="Warrior">Warrior
@@ -183,19 +188,18 @@
 
         <p>
           <label class="container" onclick="setdefbonus()">
-            <span style="margin-right: 28px">Defense bonus?</span>
-            <input type="checkbox" id="def1" onclick="defcheck()" style="visibility: hidden">
-            <span class="checkmark"></span>
+            <span>Defense bonus?</span>
+            <input type="checkbox" id="def1" onclick="defcheck()">
           </label>
           <label class="container" onclick="setwallbonus()">
-            <span style="margin-right: 28px">Wall bonus?</span>
-            <input type="checkbox" id="def2" onclick="wallcheck()" style="visibility: hidden">
-            <span class="checkmark"></span>
+            <span>Wall bonus?</span>
+            <input type="checkbox" id="def2" onclick="wallcheck()">
           </label>
         </p>
       </div>
 
-      <p><button id="submitbutton" type="submit" class="mbutton" onclick="calculate('Single')"
+      <div id="submitbox" class="bubble">
+        <button id="submitbutton" type="submit" class="mbutton" onclick="calculate('Single')"
           tabindex="7">Calculate!</button>
         <button id="createbutton" type="button" class="mbutton" onclick="createunit()" style="display:none">Create
           Unit!</button>
@@ -204,25 +208,38 @@
           Units</button>
         <a class="textpress" id="singlefaq" href="#top" onclick="return show('faq', 'main')" target="_top"
           style="margin-left: 6px">FAQ</a>
-      </p>
-    </form>
+        <div id="resultcontainer" onclick="displayextinfo()" style="max-width:  800px">
+          <p><b id="result">Result:</b> <span id="respressindicator">&#9679;</span></p>
+          <p id="resultatt"></p>
+          <p id="resultdef"></p>
+          <p id="resultsplash"></p>
+          <p id="frozennote" class="i"></p>
+          <p id="note" class="i"></p>
+          <span id="scrollanchor"></span>
+          <p id="extendedinfo" class="ext" style="display:none"><span
+            style="border-top: 1px dashed black; padding-top: 10px; display: block; max-width: 350px;"></span>Battle
+            history does not contain any entries yet.</p>
+        </div>
+      </div>
+  </form>
 
-    <p id="attackersheader" style="display:none"><b class="textpress" onclick="refreshattackers()">Attackers:</b></p>
-    <div id="attackerlist" style="display:none; width: 325px;"></div>
-    <p id="defendersheader" style="display:none"><b class="textpress" onclick="noretaldefault()"
-        style="margin-right: 75px">Defenders:</b>
-
+  <div id="units-multi" class="bubble" style="display:none">
+    <p id="attackersheader"><b class="textpress" onclick="refreshattackers()">Attackers:</b></p>
+    <div id="attackerlist" style="width: 325px;"></div>
+    <p id="defendersheader">
+      <b class="textpress" onclick="noretaldefault()" style="margin-right: 75px">
+        Defenders:
+      </b>
       <label class="container" id="noretaltext" onclick="noretalboxcheck()"
-        style="visibility: hidden; position: relative;">
+        style="display: none; position: relative;">
         <span style="margin-right: 28px">No retaliation?</span>
-        <input type="checkbox" id="noretalbox" style="visibility: hidden">
+        <input type="checkbox" id="noretalbox">
         <span class="checkmark"></span>
       </label>
-
     </p>
-    <div id="defenderlist" style="display:none; width: 325px;"></div>
+    <div id="defenderlist" style="width: 325px"></div>
 
-    <p id="states" style="display: none"><button type="button" class="mbutton" onclick="createbackup()">Save
+    <p id="states"><button type="button" class="mbutton" onclick="createbackup()">Save
         State</button>
       <button type="button" class="mbutton" onclick="loadbackup()">Load State</button>
       <button id="healbutton" type="button" class="mbutton" onclick="healunitprompt()">+2</button>
@@ -230,25 +247,16 @@
         style="margin-left: 6px">FAQ</a>
     </p>
 
-    <div id="resultcontainer" onclick="displayextinfo()" style="max-width: 800px">
-      <p><b id="result">Result:</b><span id="respressindicator">&#9679;</span></p>
-      <p id="resultatt"><b><i>2020.12.12:</i></b> Fix retaliation from Mind Benders.<br /><br />
-        <b><i>2020.12.14: </i></b>This got picked up by <a
-          href="https://discord.com/channels/@me/217385992837922819">@jd#0001</a><br />.
-      </p>
-      <p id="resultdef"><b><i>14.08.2019: </i></b>Final update from frothfrenzy. Refer to the <a
-          href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/Changelog.md"
-          target="_blank">Changelog</a> for details.<br /><br />
-        <b><i>18.07.2019:</i></b> Added a +2 HP heal button in Multi mode.
-      </p>
-      <p id="resultsplash"></p>
-      <p id="frozennote" class="i"></p>
-      <p id="note" class="i"></p>
-      <span id="scrollanchor"></span>
-      <p id="extendedinfo" class="ext" style="display:none"><span
-          style="border-top: 1px dashed black; padding-top: 10px; display: block; max-width: 350px;"></span>Battle
-        history does not contain any entries yet.</p>
-    </div>
+  </div>
+
+  <div id="changelog" class="bubble">
+    <b><i>2020.12.12:</i></b> Fix retaliation from Mind Benders.<br/><br/>
+    <b><i>2020.12.14:</i></b> This got picked up by <a
+        href="https://discord.com/channels/@me/217385992837922819">@jd#0001</a><br/><br/>
+    <b><i>14.08.2019:</i></b> Final update from frothfrenzy. Refer to the <a
+        href="https://github.com/frothfrenzy/polytopiacalculator/blob/master/Changelog.md"
+        target="_blank">Changelog</a> for details.<br/><br/>
+    <b><i>18.07.2019:</i></b> Added a +2 HP heal button in Multi mode.
   </div>
 
   <div id="faq" style="display:none; max-width: 800px">

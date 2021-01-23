@@ -1,217 +1,26 @@
-h2
-{
-	display: inline;
+body {
+    background-image: url('https://cdn.discordapp.com/attachments/619635292625698835/724021703008714818/1920x1080.png');
+    background-size: cover;
+    background-attachment: fixed;
 }
-p
-{
-	max-height: 999999px;
-	font-size: 17px;
-	margin-top: 12px;
-	margin-bottom: 12px;
+
+#header h2 {
+    margin-top: 0;
 }
-p.ext
-{
-	font-size: 16px;
+
+.bubble {
+    padding: 2em;
+    color: #fff;
+    background: #000d;
+    margin: 2em;
+    border-radius: 2em;
+    display: block;
 }
-p.i
-{
-	font-style: italic;
-}
-div.a
-{
-	border-bottom: 1px solid;
-	float: left;
-	display: none;
-	width: 100%;
-}
-div.c
-{
-	font-size: 13px;
-	max-height: 999999px;
-}
-div.ei
-{
-	text-align: right;
-	padding-right: 8px;
-	float: right;
-	width: 1%;
-}
-div.p
-{
-	font-size: 17px;
-	float: left;
-	width: 92%;
-}
-div.q
-{
-	border-bottom: 1px solid;
-	padding-top: 14px;
-	padding-bottom: 14px;
-	float: left;
-	width: 100%
-}
-.textpress
-{
-	padding-top: 4px;
-	padding-bottom: 4px;
-}
-.textpress:active
-{
-	background-color: lightgray;
-}
-#respressindicator
-{
-	visibility: hidden;
-}
-#resultcontainer:active #respressindicator
-{
-	visibility: visible;
-}
-.container
-{
-	display: inline-block;
-	position: relative;
-	cursor: pointer;
-	height: 40px;
-	font-size: 17px;
-	border: 1px solid #A9A9A9;
-	padding-top: 10px;
-	padding-bottom: 6px;
-	padding-left: 2px;
-	padding-right: 2px;
-	box-sizing: border-box;
-	-moz-appearance:none;
-	-webkit-appearance: none;
-	appearance:none;
-}
-.container:active
-{
-	background-color: lightgray;
-}
-.shiphpcontainer
-{
-	display: inline-block;
-	cursor: pointer;
-	font-size: 17px;
-	border: 1px solid #A9A9A9;
-	width: 39px;
-	height: 40px;
-	padding-top: 10px;
-	padding-bottom: 6px;
-	padding-left: 2px;
-	padding-right: 2px;
-	text-align: center;
-	box-sizing: border-box;
-	-moz-appearance:none;
-	-webkit-appearance: none;
-	appearance:none;
-}
-.shiphpcontainer:active
-{
-	background-color: lightgray;
-}
-.creationcontainer
-{
-	display: inline-block;
-	cursor: pointer;
-	font-size: 17px;
-	border: 1px solid #A9A9A9;
-	width: 28px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 1px;
-	padding-right: 1px;
-	-moz-appearance:none;
-	-webkit-appearance: none;
-	appearance:none;
-}
-.container input
-{
-	position: absolute;
-	cursor: pointer;
-	height: 0;
-	width: 0;
-}
-.checkmark
-{
-	position: absolute;
-	height: 18px;
-	width: 18px;
-	top: 10px;
-	right: 2px;
-	background-color: #eee;
-	border: 1px solid #696969;
-	border-radius: 5px;
-}
-.checkmark:after
-{
-	content: "";
-	position: absolute;
-	display: none;
-}
-.container input:checked ~ .checkmark:after
-{
-	display: block;
-}
-.container .checkmark:after
-{
-	left: 6px;
-	top: 2px;
-	width: 4px;
-	height: 9px;
-	border: solid black;
-	border-width: 0 3px 3px 0;
-	transform: rotate(45deg);
-	-webkit-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-}
-input[type=number]
-{
-	display: inline-block;
-	border: 1px solid #A9A9A9;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 1px;
-	padding-right: 1px;
-	border-radius: 0;
-	font-size: 17px;
-	-moz-appearance:none;
-	-webkit-appearance: none;
-	appearance:none;
-}
-select
-{
-	position: relative;
-	width: 135px;
-	height: 40px;
-	font-size: 17px;
-	display: inline-block;
-	border: 1px solid #A9A9A9;
-	padding-left: 1px;
-	padding-right: 2px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	border-radius: 0;
-	box-sizing: border-box;
-	-moz-appearance:none;
-	-webkit-appearance: none;
-	appearance:none;
-}
-select::-ms-expand
-{
-	display: none;
-}
-button
-{
-	font-size: 17px;
-	background-color: #eee;
-	color: black;
-	padding: 7px 11px;
-	border: 1px solid #696969;
-	border-radius: 5px;
-	cursor: pointer;
-}
-button:active
-{
-	background-color: lightgray;
+
+@supports ((backdrop-filter: blur(5px)) or (-webkit-backdrop-filter: blur(5px))) {
+    .bubble {
+        background: none;
+        backdrop-filter: blur(5px) brightness(0.2);
+        -webkit-backdrop-filter: blur(5px) brightness(0.2);
+    }
 }

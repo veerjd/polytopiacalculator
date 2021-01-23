@@ -1129,19 +1129,22 @@ function resetcounters() {
   prevdefenderselected = -1;
 }
 function choosetype() {
-  if (document.getElementById("unitselect").innerText == "Create Attacker") {
-    document.getElementById("unitselect").innerText = "Create Defender";
+  const selectText = document.getElementById("unitselect");
+  const button = document.getElementById("createunitbutton").parentElement;
+  if (selectText.innerText == "Create Attacker") {
+    selectText.innerText = "Create Defender";
     document.getElementById("switch1").style.visibility = "hidden";
     document.getElementById("switch2").style.visibility = "visible";
   }
   else {
-    document.getElementById("unitselect").innerText = "Create Attacker";
+    selectText.innerText = "Create Attacker";
     document.getElementById("switch1").style.visibility = "visible";
     document.getElementById("switch2").style.visibility = "hidden";
   }
 
-  var unittype = document.getElementById("unitselect").innerText;
+  var unittype = selectText.innerText;
   if (unittype == "Create Attacker") {
+    document.getElementById("attvalues").prepend(button);
     document.getElementById("attvalues").style.display = 'block';
     document.getElementById("attack").style.display = 'none';
     document.getElementById("attvaluetext").style.display = 'none';
@@ -1150,6 +1153,7 @@ function choosetype() {
     document.getElementById("defvalues").style.display = 'none';
   }
   else if (unittype == "Create Defender") {
+    document.getElementById("defvalues").prepend(button);
     document.getElementById("defvalues").style.display = 'block';
     document.getElementById("defense").style.display = 'none';
     document.getElementById("defvaluetext").style.display = 'none';
@@ -1166,15 +1170,10 @@ function multiswitch() {
     document.getElementById("createbutton").style.display = 'inline-block';
     document.getElementById("multibutton").innerText = "Single";
     document.getElementById("deletebutton").style.display = 'inline-block';
-    document.getElementById("healbutton").style.display = 'inline-block';
+    document.getElementById("units-multi").style.display = 'block';
     document.getElementById("singlefaq").style.display = 'none';
     document.getElementById("result").innerText = "Feedback:";
     document.getElementById("createunitbutton").style.display = 'inline-block';
-    document.getElementById("attackerlist").style.display = 'block';
-    document.getElementById("defenderlist").style.display = 'block';
-    document.getElementById("attackersheader").style.display = 'block';
-    document.getElementById("defendersheader").style.display = 'block';
-    document.getElementById("states").style.display = 'block';
     document.getElementById("def1").checked = false;
     document.getElementById("def2").checked = false;
     document.getElementById("selectattacker").selectedIndex = 0;
@@ -1197,18 +1196,13 @@ function multiswitch() {
     document.getElementById("createbutton").style.display = 'none';
     document.getElementById("multibutton").innerText = "Multi";
     document.getElementById("deletebutton").style.display = 'none';
-    document.getElementById("healbutton").style.display = 'none';
+    document.getElementById("units-multi").style.display = 'none';
     document.getElementById("singlefaq").style.display = 'inline-block';
     document.getElementById("result").innerText = "Result:";
     document.getElementById("createunitbutton").style.display = 'none';
     document.getElementById("attvalues").style.display = 'block';
     document.getElementById("defvalues").style.display = 'block';
     document.getElementById("attvalues").style.display = 'block';
-    document.getElementById("attackerlist").style.display = 'none';
-    document.getElementById("defenderlist").style.display = 'none';
-    document.getElementById("attackersheader").style.display = 'none';
-    document.getElementById("defendersheader").style.display = 'none';
-    document.getElementById("states").style.display = 'none';
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     if (shortparameter == false) {
       document.getElementById("attvaluetext").style.display = 'block';
