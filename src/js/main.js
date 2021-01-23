@@ -1085,9 +1085,9 @@ function numberfocusout(focusoutid) {
   }
   document.getElementById(focusoutid + "rem").style.visibility = "hidden";
 }
-function show(shown, hidden) {
+function show(shown, hidden, layout = 'block') {
   document.body.scrollTop = document.documentElement.scrollTop = 0;
-  document.getElementById(shown).style.display = 'block';
+  document.getElementById(shown).style.display = layout;
   document.getElementById(hidden).style.display = 'none';
   resetcounters();
   if ((document.getElementById("multibutton").innerText == "Single") && (deleteselected == true)) {
