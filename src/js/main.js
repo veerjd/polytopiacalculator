@@ -40,6 +40,8 @@ function calculate(mode) {
     var def = defenders[defenderselected].d;
     var atthp = parseInt(attackers[attackerselected].hp);
     var defhp = parseInt(defenders[defenderselected].hp);
+    var attboosted = document.getElementById("attb").checked;
+    var defpoisoned = document.getElementById("defp").checked;
     var splashhp = parseInt(defenders[defenderselected].hp);
     var attorighp = parseInt(attackers[attackerselected].originalhp);
     var attmaxhp = attackers[attackerselected].maxhp;
@@ -57,7 +59,19 @@ function calculate(mode) {
     var defmaxhp = parseInt(document.getElementById("defensemaxhp").value);
     var attname = document.getElementById("selectattacker").value;
     var defname = document.getElementById("selectdefender").value;
+
+    var attboosted = document.getElementById("attb").checked;
+    var defpoisoned = document.getElementById("defp").checked;
   }
+
+  if (attboosted) {
+    att = att + 0.5
+  }
+
+  if (defpoisoned) {
+    def = def * 0.8
+  }
+
   resetcounters();
   if (atthp == 123) {
     messageclear();
@@ -91,17 +105,14 @@ function calculate(mode) {
       document.getElementById("resultatt").innerHTML = "All of the fields have to be filled with numbers!";
       scrollanchor.scrollIntoView(false);
     }
-    else if (att < 0 || def < 0 || atthp < 1 || defhp < 1 || attmaxhp < 10 || defmaxhp < 10 || atthp > attmaxhp || defhp > defmaxhp ||
-      (att % 0.5 != 0) || (def % 0.5 != 0) || (document.getElementById("attackhp").value % atthp != 0) || (document.getElementById("defensehp").value % defhp != 0) ||
+    else if (att < 0 || def < 0 || atthp < 1 || defhp < 1 || attmaxhp < 5 || defmaxhp < 5 || atthp > attmaxhp || defhp > defmaxhp ||
+      (document.getElementById("attackhp").value % atthp != 0) || (document.getElementById("defensehp").value % defhp != 0) ||
       (document.getElementById("attackmaxhp").value % attmaxhp != 0) || (document.getElementById("defensemaxhp").value % defmaxhp != 0)) {
       warning = true;
       messageclear();
       document.getElementById("resultatt").innerHTML = "One or more invalid inputs:<br/>";
       if (att < 0) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Attack value must be 0 or higher");
-      }
-      else if (att % 0.5 != 0) {
-        resultatt.insertAdjacentHTML("beforeend", "<br/>- Attack value must be divisible by 0.5");
       }
       if (atthp < 1) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Attacker current HP can't be lower than 1");
@@ -112,7 +123,7 @@ function calculate(mode) {
       else if (atthp > attmaxhp && atthp > 0 && attmaxhp >= 10) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Attacker current HP cannot exceed max HP");
       }
-      if (attmaxhp < 10) {
+      if (attmaxhp < 5) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Attacker max HP must be 10 or higher");
       }
       else if (document.getElementById("attackmaxhp").value % attmaxhp != 0) {
@@ -120,9 +131,6 @@ function calculate(mode) {
       }
       if (def < 0) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Defense value must be 0 or higher");
-      }
-      else if (def % 0.5 != 0) {
-        resultatt.insertAdjacentHTML("beforeend", "<br/>- Defense value must be divisible by 0.5");
       }
       if (defhp < 1) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Defender current HP can't be lower than 1");
@@ -133,7 +141,7 @@ function calculate(mode) {
       else if (defhp > defmaxhp && defhp > 0 && defmaxhp >= 10) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Defender current HP cannot exceed max HP");
       }
-      if (defmaxhp < 10) {
+      if (defmaxhp < 5) {
         resultatt.insertAdjacentHTML("beforeend", "<br/>- Defender max HP must be 10 or higher");
       }
       else if (document.getElementById("defensemaxhp").value % defmaxhp != 0) {
@@ -268,239 +276,255 @@ function calculate(mode) {
       }
     }
 
-    unit1 = attname + " " + att + "|" + atthp + "|" + attmaxhp + " - ";
-    unit2 = defname + " " + def + "|" + defhp + "|" + defmaxhp + defbonus;
+    testdef = false;
+    if (mode == "Multi") {
+      multitestdef = defenders[defenderselected].defbonus;
+      if (multitestdef == "P") {
+        testdef = true;
+      }
+    }
+    else {
+      testdef = document.getElementById("defp").checked;
+    }
+    if (testdef == true) {
+      defforce = defforce * 0.8;
+      defbonus = "|P";
+    }
+  }
 
-    totaldam = attforce + defforce;
-    res = Math.round(attforce / totaldam * att * 4.5);
-    if (isNaN(res) == true) {
-      res = 0;
-    }
-    if (attname == "Fire Dragon") {
-      splashhp = splashhp - Math.floor(res / 2);
-      if (splashhp > 0) {
-        if (mode != "Multi") {
-          cstring = document.getElementById("resultsplash").innerHTML = "<p><i>IF SPLASHED:</i></p>Defender survives! Remaining HP:  " + splashhp;
-        }
-        else if (attackers[attackerselected].defendersattacked.length > 0) {
-          cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's splash attack.</i>";
-        }
-        else if (attackers[attackerselected].defendersattacked.length < 1) {
-          if (document.getElementById("noretalbox").checked == true) {
-            cstring = document.getElementById("resultsplash").innerHTML = "<i><p>Fire Dragon's main attack.</p>No enemy retaliation.</i>";
-          }
-          else {
-            cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's main attack.</i>";
-          }
-        }
+  unit1 = attname + " " + att + "|" + atthp + "|" + attmaxhp + " - ";
+  unit2 = defname + " " + def + "|" + defhp + "|" + defmaxhp + defbonus;
+
+  totaldam = attforce + defforce;
+  res = Math.round(attforce / totaldam * att * 4.5);
+  if (isNaN(res) == true) {
+    res = 0;
+  }
+  if (attname == "Fire Dragon") {
+    splashhp = splashhp - Math.floor(res / 2);
+    if (splashhp > 0) {
+      if (mode != "Multi") {
+        cstring = document.getElementById("resultsplash").innerHTML = "<p><i>IF SPLASHED:</i></p>Defender survives! Remaining HP:  " + splashhp;
       }
-      else {
-        if (mode != "Multi") {
-          cstring = document.getElementById("resultsplash").innerHTML = "<p><i>IF SPLASHED:</i></p>Defender is DESTROYED! Afterlife HP:  " + splashhp;
+      else if (attackers[attackerselected].defendersattacked.length > 0) {
+        cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's splash attack.</i>";
+      }
+      else if (attackers[attackerselected].defendersattacked.length < 1) {
+        if (document.getElementById("noretalbox").checked == true) {
+          cstring = document.getElementById("resultsplash").innerHTML = "<i><p>Fire Dragon's main attack.</p>No enemy retaliation.</i>";
         }
-        else if (attackers[attackerselected].defendersattacked.length > 0) {
-          cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's splash attack.</i>";
-        }
-        else if (attackers[attackerselected].defendersattacked.length < 1) {
-          if (document.getElementById("noretalbox").checked == true) {
-            cstring = document.getElementById("resultsplash").innerHTML = "<i><p>Fire Dragon's main attack.</p>No enemy retaliation.</i>";
-          }
-          else {
-            cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's main attack.</i>";
-          }
+        else {
+          cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's main attack.</i>";
         }
       }
     }
-    if ((attname == "Fire Dragon") && (mode == "Multi")) {
-      if (attackers[attackerselected].defendersattacked.length > 0) {
-        defhp = splashhp;
+    else {
+      if (mode != "Multi") {
+        cstring = document.getElementById("resultsplash").innerHTML = "<p><i>IF SPLASHED:</i></p>Defender is DESTROYED! Afterlife HP:  " + splashhp;
       }
-      else {
-        defhp = defhp - res;
+      else if (attackers[attackerselected].defendersattacked.length > 0) {
+        cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's splash attack.</i>";
       }
+      else if (attackers[attackerselected].defendersattacked.length < 1) {
+        if (document.getElementById("noretalbox").checked == true) {
+          cstring = document.getElementById("resultsplash").innerHTML = "<i><p>Fire Dragon's main attack.</p>No enemy retaliation.</i>";
+        }
+        else {
+          cstring = document.getElementById("resultsplash").innerHTML = "<i>Fire Dragon's main attack.</i>";
+        }
+      }
+    }
+  }
+  if ((attname == "Fire Dragon") && (mode == "Multi")) {
+    if (attackers[attackerselected].defendersattacked.length > 0) {
+      defhp = splashhp;
     }
     else {
       defhp = defhp - res;
     }
+  }
+  else {
+    defhp = defhp - res;
+  }
 
-    if (mode != "Multi") {
-      if (defhp > 0) {
-        if (attname == "Ice Archer") {
+  if (mode != "Multi") {
+    if (defhp > 0) {
+      if (attname == "Ice Archer") {
+        bstring = document.getElementById("resultdef").innerHTML = "Defender is FROZEN! Remaining HP:  " + defhp;
+        document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
+      }
+      else {
+        bstring = document.getElementById("resultdef").innerHTML = "Defender survives! Remaining HP:  " + defhp;
+        document.getElementById("defensehp").value = defhp;
+      }
+      res = Math.round(defforce / totaldam * def * 4.5);
+      if (isNaN(res) == true) {
+        res = 0;
+      }
+      if (attname == "Ice Archer" || defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
+        res = 0;
+        if (defname == "Mind Bender") {
+          document.getElementById("frozennote").innerHTML = "Mind Bender can't retaliate!";
+        }
+        if (defname == "Mooni") {
+          document.getElementById("frozennote").innerHTML = "Moonies can't retaliate!";
+        }
+        if (defname == "Ice Archer") {
+          document.getElementById("frozennote").innerHTML = "Ice Archers can't retaliate!";
+        }
+      }
+      atthp = atthp - res;
+      if (atthp > 0) {
+        astring = document.getElementById("resultatt").innerHTML = "Attacker survives! Remaining HP:  " + atthp;
+      }
+      else {
+        astring = document.getElementById("resultatt").innerHTML = "Attacker is DESTROYED! Afterlife HP:  " + atthp;
+      }
+    }
+    else {
+      bstring = document.getElementById("resultdef").innerHTML = "Defender is DESTROYED! Afterlife HP:  " + defhp;
+      egg(att);
+    }
+  }
+
+  if (mode == "Multi") {
+    if (defhp > 0) {
+      if (attname == "Ice Archer") {
+        bstring = document.getElementById("resultdef").innerHTML = "Defender is FROZEN! Remaining HP:  " + defhp;
+        document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
+        defenders[defenderselected].frozen = true;
+      }
+
+      else {
+        if (defenders[defenderselected].frozen == true) {
           bstring = document.getElementById("resultdef").innerHTML = "Defender is FROZEN! Remaining HP:  " + defhp;
-          document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
         }
         else {
           bstring = document.getElementById("resultdef").innerHTML = "Defender survives! Remaining HP:  " + defhp;
-          document.getElementById("defensehp").value = defhp;
         }
+        defenders[defenderselected].hp = defhp;
         res = Math.round(defforce / totaldam * def * 4.5);
-        if (isNaN(res) == true) {
+        if (defenders[defenderselected].frozen == true) {
           res = 0;
+          document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
         }
-        if (attname == "Ice Archer" || defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
+        else if (defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
           res = 0;
-          if (defname == "Mind Bender") {
-            document.getElementById("frozennote").innerHTML = "Mind Bender can't retaliate!";
+          if (defname == "Mind Bender" && attackers[attackerselected].defendersattacked.length == 0) {
+            document.getElementById("note").innerHTML = "Mind Benders can't retaliate!";
           }
-          if (defname == "Mooni") {
-            document.getElementById("frozennote").innerHTML = "Moonies can't retaliate!";
+          if (defname == "Mooni" && attackers[attackerselected].defendersattacked.length == 0) {
+            document.getElementById("note").innerHTML = "Moonies can't retaliate!";
           }
-          if (defname == "Ice Archer") {
-            document.getElementById("frozennote").innerHTML = "Ice Archers can't retaliate!";
+          if (defname == "Ice Archer" && attackers[attackerselected].defendersattacked.length == 0) {
+            document.getElementById("note").innerHTML = "Ice Archers can't retaliate!";
           }
         }
-        atthp = atthp - res;
-        if (atthp > 0) {
+      }
+      if (isNaN(res) == true) {
+        res = 0;
+      }
+      if (document.getElementById("noretalbox").checked == false) {
+        if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
+        }
+        else {
+          atthp = atthp - res;
+        }
+      }
+      if (atthp > 0) {
+        if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
+        }
+        else {
           astring = document.getElementById("resultatt").innerHTML = "Attacker survives! Remaining HP:  " + atthp;
+          attackers[attackerselected].hp = atthp;
+        }
+      }
+      else {
+        if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
         }
         else {
           astring = document.getElementById("resultatt").innerHTML = "Attacker is DESTROYED! Afterlife HP:  " + atthp;
+          attackers[attackerselected].hp = atthp;
         }
-      }
-      else {
-        bstring = document.getElementById("resultdef").innerHTML = "Defender is DESTROYED! Afterlife HP:  " + defhp;
-        egg(att);
       }
     }
+    else {
+      bstring = document.getElementById("resultdef").innerHTML = "Defender is DESTROYED! Afterlife HP:  " + defhp;
+      defenders[defenderselected].hp = defhp;
+    }
 
-    if (mode == "Multi") {
-      if (defhp > 0) {
-        if (attname == "Ice Archer") {
-          bstring = document.getElementById("resultdef").innerHTML = "Defender is FROZEN! Remaining HP:  " + defhp;
-          document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
-          defenders[defenderselected].frozen = true;
-        }
-
-        else {
-          if (defenders[defenderselected].frozen == true) {
-            bstring = document.getElementById("resultdef").innerHTML = "Defender is FROZEN! Remaining HP:  " + defhp;
-          }
-          else {
-            bstring = document.getElementById("resultdef").innerHTML = "Defender survives! Remaining HP:  " + defhp;
-          }
-          defenders[defenderselected].hp = defhp;
-          res = Math.round(defforce / totaldam * def * 4.5);
-          if (defenders[defenderselected].frozen == true) {
-            res = 0;
-            document.getElementById("frozennote").innerHTML = "Frozen units can't retaliate!";
-          }
-          else if (defname == "Mind Bender" || defname == "Mooni" || defname == "Ice Archer") {
-            res = 0;
-            if (defname == "Mind Bender" && attackers[attackerselected].defendersattacked.length == 0) {
-              document.getElementById("note").innerHTML = "Mind Benders can't retaliate!";
-            }
-            if (defname == "Mooni" && attackers[attackerselected].defendersattacked.length == 0) {
-              document.getElementById("note").innerHTML = "Moonies can't retaliate!";
-            }
-            if (defname == "Ice Archer" && attackers[attackerselected].defendersattacked.length == 0) {
-              document.getElementById("note").innerHTML = "Ice Archers can't retaliate!";
-            }
-          }
-        }
-        if (isNaN(res) == true) {
-          res = 0;
-        }
-        if (document.getElementById("noretalbox").checked == false) {
-          if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
-          }
-          else {
-            atthp = atthp - res;
-          }
-        }
-        if (atthp > 0) {
-          if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
-          }
-          else {
-            astring = document.getElementById("resultatt").innerHTML = "Attacker survives! Remaining HP:  " + atthp;
-            attackers[attackerselected].hp = atthp;
-          }
-        }
-        else {
-          if ((attname == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
-          }
-          else {
-            astring = document.getElementById("resultatt").innerHTML = "Attacker is DESTROYED! Afterlife HP:  " + atthp;
-            attackers[attackerselected].hp = atthp;
-          }
-        }
-      }
-      else {
-        bstring = document.getElementById("resultdef").innerHTML = "Defender is DESTROYED! Afterlife HP:  " + defhp;
-        defenders[defenderselected].hp = defhp;
-      }
-
-      if ((attackers[attackerselected].type != "Knight") && (attackers[attackerselected].type != "Navalon") && (attackers[attackerselected].type != "Fire Dragon")) {
+    if ((attackers[attackerselected].type != "Knight") && (attackers[attackerselected].type != "Navalon") && (attackers[attackerselected].type != "Fire Dragon")) {
+      attackers[attackerselected].unavailable = true;
+    }
+    else if (attackers[attackerselected].type == "Fire Dragon") {
+      attackers[attackerselected].defendersattacked.push(defenderselected);
+      document.getElementById("noretaltext").style.visibility = "hidden";
+    }
+    else {
+      if ((defhp > 0) || (atthp < 1)) {
         attackers[attackerselected].unavailable = true;
       }
-      else if (attackers[attackerselected].type == "Fire Dragon") {
+      else {
         attackers[attackerselected].defendersattacked.push(defenderselected);
-        document.getElementById("noretaltext").style.visibility = "hidden";
       }
-      else {
-        if ((defhp > 0) || (atthp < 1)) {
-          attackers[attackerselected].unavailable = true;
-        }
-        else {
-          attackers[attackerselected].defendersattacked.push(defenderselected);
-        }
-      }
-
-      var decshort = "";
-      var color = "black";
-      if (attackers[attackerselected].type == "Knight") {
-        decshort = "<b>3</b>";
-      }
-      else {
-        decshort = attackers[attackerselected].a;
-      }
-      if ((attackers[attackerselected].hp < 1) || (attackers[attackerselected].unavailable == true)) {
-        color = "gray";
-      }
-      var splashindicator = ""
-      if ((attackers[attackerselected].type == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
-        splashindicator = "S";
-      }
-      document.getElementById("attacker" + attackerselected).innerHTML = "<img src='src/img/Attackers/" + attackers[attackerselected].type + ".png' height='55' width='55'><div id='splash" + attackerselected + "' style='position: absolute; top: 1px; right: 1px'><b>" + splashindicator + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + decshort + "/" + attackers[attackerselected].hp + "/" + attackers[attackerselected].maxhp + "</div>";
-      document.getElementById("attacker" + attackerselected).style.borderColor = color;
-
-      color = "black"
-      if (defenders[defenderselected].hp < 1) {
-        color = "gray";
-      }
-      else if (defenders[defenderselected].frozen == true) {
-        color = "blue";
-      }
-      document.getElementById("defender" + defenderselected).innerHTML = "<img src='src/img/Defenders/" + defenders[defenderselected].type + ".png' height='55' width='55'><div style='position: absolute; top: 1px; right: 1px'><b>" + defenders[defenderselected].defbonus + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + defenders[defenderselected].d + "/" + defenders[defenderselected].hp + "/" + defenders[defenderselected].maxhp + "</div>";
-      document.getElementById("defender" + defenderselected).style.borderColor = color;
-
-    }
-    if ((mode == "Multi") && (attackers[attackerselected].type != "Fire Dragon") && (document.getElementById("noretalbox").checked == true) && (defenders[defenderselected].hp > 0)) {
-      cstring = document.getElementById("resultsplash").innerHTML = "<i>No enemy retaliation.</i>";
-    }
-    if (mode == "Multi") {
-      if ((attackers[attackerselected].type == "Archer") || (attackers[attackerselected].type == "Catapult") || (attackers[attackerselected].type == "Boat") || (attackers[attackerselected].type == "Ship") || (attackers[attackerselected].type == "Battleship") || (attackers[attackerselected].type == "Tridention") || (attackers[attackerselected].type == "Ice Fortress")) {
-        document.getElementById("noretalbox").checked = false;
-        document.getElementById("noretaltext").style.visibility = "hidden";
-      }
-    }
-    if (astring == null) {
-      astring = "";
-    }
-    if (cstring == null) {
-      cstring = "";
     }
 
-    if (extinfo.length >= entries) {
-      extinfo.pop();
+    var decshort = "";
+    var color = "black";
+    if (attackers[attackerselected].type == "Knight") {
+      decshort = "<b>3</b>";
     }
-    extinfo.splice(0, 0, "<span style='border-top: 1px dashed black; display: block; max-width: 350px;'></span><p class='ext'>" + unit1 + unit2 + "</p><p class='ext'>" + astring + "</p><p class='ext'>" + bstring + "</p><p class='ext'>" + cstring + "</p>");
-    document.getElementById("extendedinfo").innerHTML = extinfo.join("");
+    else {
+      decshort = attackers[attackerselected].a;
+    }
+    if ((attackers[attackerselected].hp < 1) || (attackers[attackerselected].unavailable == true)) {
+      color = "gray";
+    }
+    var splashindicator = ""
+    if ((attackers[attackerselected].type == "Fire Dragon") && (attackers[attackerselected].defendersattacked.length > 0)) {
+      splashindicator = "S";
+    }
+    document.getElementById("attacker" + attackerselected).innerHTML = "<img src='src/img/Attackers/" + attackers[attackerselected].type + ".png' height='55' width='55'><div id='splash" + attackerselected + "' style='position: absolute; top: 1px; right: 1px'><b>" + splashindicator + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + decshort + "/" + attackers[attackerselected].hp + "/" + attackers[attackerselected].maxhp + "</div>";
+    document.getElementById("attacker" + attackerselected).style.borderColor = color;
 
-    if (mode != "Multi") {
-      scrollanchor.scrollIntoView(false);
+    color = "black"
+    if (defenders[defenderselected].hp < 1) {
+      color = "gray";
+    }
+    else if (defenders[defenderselected].frozen == true) {
+      color = "blue";
+    }
+    document.getElementById("defender" + defenderselected).innerHTML = "<img src='src/img/Defenders/" + defenders[defenderselected].type + ".png' height='55' width='55'><div style='position: absolute; top: 1px; right: 1px'><b>" + defenders[defenderselected].defbonus + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + defenders[defenderselected].d + "/" + defenders[defenderselected].hp + "/" + defenders[defenderselected].maxhp + "</div>";
+    document.getElementById("defender" + defenderselected).style.borderColor = color;
+
+  }
+  if ((mode == "Multi") && (attackers[attackerselected].type != "Fire Dragon") && (document.getElementById("noretalbox").checked == true) && (defenders[defenderselected].hp > 0)) {
+    cstring = document.getElementById("resultsplash").innerHTML = "<i>No enemy retaliation.</i>";
+  }
+  if (mode == "Multi") {
+    if ((attackers[attackerselected].type == "Archer") || (attackers[attackerselected].type == "Catapult") || (attackers[attackerselected].type == "Boat") || (attackers[attackerselected].type == "Ship") || (attackers[attackerselected].type == "Battleship") || (attackers[attackerselected].type == "Tridention") || (attackers[attackerselected].type == "Ice Fortress")) {
+      document.getElementById("noretalbox").checked = false;
+      document.getElementById("noretaltext").style.visibility = "hidden";
     }
   }
+  if (astring == null) {
+    astring = "";
+  }
+  if (cstring == null) {
+    cstring = "";
+  }
+
+  if (extinfo.length >= entries) {
+    extinfo.pop();
+  }
+  extinfo.splice(0, 0, "<span style='border-top: 1px dashed black; display: block; max-width: 350px;'></span><p class='ext'>" + unit1 + unit2 + "</p><p class='ext'>" + astring + "</p><p class='ext'>" + bstring + "</p><p class='ext'>" + cstring + "</p>");
+  document.getElementById("extendedinfo").innerHTML = extinfo.join("");
+
+  if (mode != "Multi") {
+    scrollanchor.scrollIntoView(false);
+  }
 }
+
 function defcheck() {
   var test = document.getElementById("def2").checked;
   if (test == true) {
@@ -520,6 +544,7 @@ function setdefbonus() {
   }
   else {
     document.getElementById("def1").checked = true;
+    document.getElementById("defp").checked = false;
   }
   defcheck();
 }
@@ -530,8 +555,47 @@ function setwallbonus() {
   }
   else {
     document.getElementById("def2").checked = true;
+    document.getElementById("defp").checked = false;
   }
   wallcheck();
+}
+function setdefpoison() {
+  var test = document.getElementById("defp").checked;
+  if (test == true) {
+    document.getElementById("defp").checked = false;
+  }
+  else {
+    document.getElementById("defp").checked = true;
+    document.getElementById("def1").checked = false;
+    document.getElementById("def2").checked = false;
+  }
+}
+function setdefboost() {
+  var test = document.getElementById("defb").checked;
+  if (test == true) {
+    document.getElementById("defb").checked = false;
+  }
+  else {
+    document.getElementById("defb").checked = true;
+  }
+}
+function setattpoison() {
+  var test = document.getElementById("attp").checked;
+  if (test == true) {
+    document.getElementById("attp").checked = false;
+  }
+  else {
+    document.getElementById("attp").checked = true;
+  }
+}
+function setattboost() {
+  var test = document.getElementById("attb").checked;
+  if (test == true) {
+    document.getElementById("attb").checked = false;
+  }
+  else {
+    document.getElementById("attb").checked = true;
+  }
 }
 function attackerfill() {
   var getattacker = document.getElementById("selectattacker").value;
@@ -646,9 +710,54 @@ function attackerfill() {
       document.getElementById("attackhp").value = "30";
       document.getElementById("attackmaxhp").value = "30";
       break;
+    case "Shaman":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Hexapod":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Kiton":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Phychi":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Exida":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Raychi":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Doomux":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Centipede":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Segment":
+      document.getElementById("attack").value = "2";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
   }
   document.getElementById("shortatt").innerText = "(" + document.getElementById("attack").value + ")";
-  if (getattacker == "Warrior" || getattacker == "Rider" || getattacker == "Defender" || getattacker == "Swordsman" || getattacker == "Archer" || getattacker == "Catapult" || getattacker == "Knight" || getattacker == "Amphibian" || getattacker == "Tridention" || getattacker == "Battle Sled" || getattacker == "Ice Fortress") {
+  if (getattacker == "Warrior" || getattacker == "Rider" || getattacker == "Defender" || getattacker == "Swordsman" || getattacker == "Archer" || getattacker == "Catapult" || getattacker == "Knight" || getattacker == "Amphibian" || getattacker == "Tridention" || getattacker == "Battle Sled" || getattacker == "Ice Fortress" || getattacker == "Hexapod" || getattacker == "Kiton" || getattacker == "Phychi" || getattacker == "Exida" || getattacker == "Raychi" || getattacker == "Domux") {
     document.getElementById("attvetbox").checked = false;
     document.getElementById("attveterancy").style.display = 'inline-block';
     document.getElementById("attshiphp").style.display = 'none';
@@ -800,9 +909,54 @@ function defenderfill() {
       document.getElementById("defensehp").value = "20";
       document.getElementById("defensemaxhp").value = "20";
       break;
+    case "Shaman":
+      document.getElementById("defense").value = "1";
+      document.getElementById("defensehp").value = "10";
+      document.getElementById("defensemaxhp").value = "10";
+      break;
+    case "Hexapod":
+      document.getElementById("defense").value = "1";
+      document.getElementById("defensehp").value = "5";
+      document.getElementById("defensemaxhp").value = "5";
+      break;
+    case "Kiton":
+      document.getElementById("defense").value = "3";
+      document.getElementById("defensehp").value = "15";
+      document.getElementById("defensemaxhp").value = "15";
+      break;
+    case "Phychi":
+      document.getElementById("defense").value = "1";
+      document.getElementById("defensehp").value = "5";
+      document.getElementById("defensemaxhp").value = "5";
+      break;
+    case "Exida":
+      document.getElementById("defense").value = "1";
+      document.getElementById("defensehp").value = "10";
+      document.getElementById("defensemaxhp").value = "10";
+      break;
+    case "Raychi":
+      document.getElementById("defense").value = "2";
+      document.getElementById("defensehp").value = "15";
+      document.getElementById("defensemaxhp").value = "15";
+      break;
+    case "Doomux":
+      document.getElementById("defense").value = "2";
+      document.getElementById("defensehp").value = "20";
+      document.getElementById("defensemaxhp").value = "20";
+      break;
+    case "Centipede":
+      document.getElementById("defense").value = "3";
+      document.getElementById("defensehp").value = "20";
+      document.getElementById("defensemaxhp").value = "20";
+      break;
+    case "Segment":
+      document.getElementById("defense").value = "2";
+      document.getElementById("defensehp").value = "10";
+      document.getElementById("defensemaxhp").value = "10";
+      break;
   }
   document.getElementById("shortdef").innerText = "(" + document.getElementById("defense").value + ")";
-  if (getdefender == "Warrior" || getdefender == "Rider" || getdefender == "Defender" || getdefender == "Swordsman" || getdefender == "Archer" || getdefender == "Catapult" || getdefender == "Knight" || getdefender == "Amphibian" || getdefender == "Tridention" || getdefender == "Battle Sled" || getdefender == "Ice Fortress") {
+  if (getdefender == "Warrior" || getdefender == "Rider" || getdefender == "Defender" || getdefender == "Swordsman" || getdefender == "Archer" || getdefender == "Catapult" || getdefender == "Knight" || getdefender == "Amphibian" || getdefender == "Tridention" || getdefender == "Battle Sled" || getdefender == "Ice Fortress" || getdefender == "Hexapod" || getdefender == "Kiton" || getdefender == "Phychi" || getdefender == "Exida" || getdefender == "Raychi" || getdefender == "Domux") {
     document.getElementById("defvetbox").checked = false;
     document.getElementById("defveterancy").style.display = 'inline-block';
     document.getElementById("defshiphp").style.display = 'none';
@@ -887,6 +1041,51 @@ function attackerveteran() {
       document.getElementById("attackhp").value = "20";
       document.getElementById("attackmaxhp").value = "20";
       break;
+    case "Shaman":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Hexapod":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Kiton":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Phychi":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Exida":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Raychi":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Doomux":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Centipede":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Segment":
+      document.getElementById("attack").value = "2";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
   }
   var atthp = parseInt(document.getElementById("attackhp").value);
   var attmaxhp = parseInt(document.getElementById("attackmaxhp").value);
@@ -953,6 +1152,51 @@ function defenderveteran() {
       document.getElementById("defense").value = "3";
       document.getElementById("defensehp").value = "20";
       document.getElementById("defensemaxhp").value = "20";
+      break;
+    case "Shaman":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Hexapod":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Kiton":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Phychi":
+      document.getElementById("attack").value = "1";
+      document.getElementById("attackhp").value = "5";
+      document.getElementById("attackmaxhp").value = "5";
+      break;
+    case "Exida":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
+      break;
+    case "Raychi":
+      document.getElementById("attack").value = "3";
+      document.getElementById("attackhp").value = "15";
+      document.getElementById("attackmaxhp").value = "15";
+      break;
+    case "Doomux":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Centipede":
+      document.getElementById("attack").value = "4";
+      document.getElementById("attackhp").value = "20";
+      document.getElementById("attackmaxhp").value = "20";
+      break;
+    case "Segment":
+      document.getElementById("attack").value = "2";
+      document.getElementById("attackhp").value = "10";
+      document.getElementById("attackmaxhp").value = "10";
       break;
   }
   var defhp = parseInt(document.getElementById("defensehp").value);
@@ -1161,6 +1405,7 @@ function choosetype() {
   }
 }
 function multiswitch() {
+  alert('There are known bugs with Multi. No need to report them just yet 😉')
   if (document.getElementById("multibutton").innerText == "Multi") {
     document.getElementById("submitbutton").style.display = 'none';
     document.getElementById("createbutton").style.display = 'inline-block';
@@ -1251,6 +1496,7 @@ function createunit() {
     var attorighp = parseInt(document.getElementById("attackhp").value);
     var attmaxhp = parseInt(document.getElementById("attackmaxhp").value);
     var attname = document.getElementById("selectattacker").value;
+    var attboosted = document.getElementById("attb").checked;
 
     if ((atthp < 1) || ((document.getElementById("attackhp").value % atthp) != 0) || (atthp > attmaxhp)) {
       warning = true;
@@ -1273,6 +1519,7 @@ function createunit() {
     var defhp = parseInt(document.getElementById("defensehp").value);
     var defmaxhp = parseInt(document.getElementById("defensemaxhp").value);
     var defname = document.getElementById("selectdefender").value;
+    var defpoisoned = document.getElementById("defp").checked;
 
     if ((defhp < 1) || ((document.getElementById("defensehp").value % defhp) != 0) || (defhp > defmaxhp)) {
       warning = true;
@@ -1292,7 +1539,7 @@ function createunit() {
   }
 
   if ((document.getElementById("unitselect").innerText == "Create Attacker") && (warning != true)) {
-    attackers.push({ type: attname, a: att, hp: atthp, maxhp: attmaxhp, unavailable: false, defendersattacked: [], originalhp: attorighp });
+    attackers.push({ type: attname, a: att, hp: atthp, maxhp: attmaxhp, unavailable: false, defendersattacked: [], originalhp: attorighp, attboosted: attboosted });
     var i = attackers.length - 1;
     var decshort = "";
     color = "black";
@@ -1303,7 +1550,12 @@ function createunit() {
     else {
       decshort = attackers[i].a;
     }
-    attackerlist.insertAdjacentHTML("beforeend", "<div class ='c' id='attacker" + i + "' style='width: 56px; height: 80px; border-style: solid; border-color: " + color + "; display: inline-block; position: relative' onclick='attackselector(" + i + ")'><img src='src/img/Attackers/" + attackers[i].type + ".png' height='55' width='55'><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + decshort + "/" + attackers[i].hp + "/" + attackers[i].maxhp + "</div></div>");
+    if (attackers[i].attboosted)
+      var attindicator = 'B'
+    else
+      var attindicator = ''
+
+    attackerlist.insertAdjacentHTML("beforeend", "<div class ='c' id='attacker" + i + "' style='width: 56px; height: 80px; border-style: solid; border-color: " + color + "; display: inline-block; position: relative' onclick='attackselector(" + i + ")'><img src='src/img/Attackers/" + attackers[i].type + ".png' height='55' width='55'><div style='position: absolute; top: 1px; right: 1px'><b>" + attindicator + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + decshort + "/" + attackers[i].hp + "/" + attackers[i].maxhp + "</div></div>");
     messageclear();
     document.getElementById("resultatt").innerHTML = "Attacker created!";
   }
@@ -1318,6 +1570,10 @@ function createunit() {
     else if (document.getElementById("def2").checked == true) {
       defindicator = "W";
     }
+    else if (document.getElementById("defp").checked == true) {
+      defindicator = "P";
+    }
+
     if ((defname == "Boat") || (defname == "Ship") || (defname == "Battleship")) {
       if (defindicator == "W") {
         document.getElementById("note").innerHTML = "Note: " + defname + "s can't benefit from walls! Wall bonus was disregarded.";
@@ -1362,7 +1618,7 @@ function createunit() {
         defindicator = "";
       }
     }
-    defenders.push({ type: defname, d: def, hp: defhp, maxhp: defmaxhp, defbonus: defindicator, frozen: false });
+    defenders.push({ type: defname, d: def, hp: defhp, maxhp: defmaxhp, defbonus: defindicator, frozen: false, defpoisoned: defpoisoned });
     var i = defenders.length - 1;
     defenderlist.insertAdjacentHTML("beforeend", "<div class ='c' id='defender" + i + "' style='width: 56px; height: 80px; border-style: solid; border-color: " + color + "; display: inline-block; position: relative' onclick='defenseselector(" + i + ")'><img src='src/img/Defenders/" + defenders[i].type + ".png' height='55' width='55'><div style='position: absolute; top: 1px; right: 1px'><b>" + defenders[i].defbonus + "</b></div><div style='position: absolute; width: 100%; bottom: 2px; text-align: center'>" + defenders[i].d + "/" + defenders[i].hp + "/" + defenders[i].maxhp + "</div></div>");
     document.getElementById("resultatt").innerHTML = "Defender created!";
@@ -1798,10 +2054,10 @@ function createbackup() {
       firstbackup = true;
     }
     for (i = 0; i < attackers.length; i++) {
-      backupattackers.push({ type2: attackers[i].type, a2: attackers[i].a, hp2: attackers[i].hp, maxhp2: attackers[i].maxhp, unavailable2: attackers[i].unavailable, defendersattacked2: attackers[i].defendersattacked.slice(), originalhp2: attackers[i].originalhp });
+      backupattackers.push({ type2: attackers[i].type, a2: attackers[i].a, hp2: attackers[i].hp, maxhp2: attackers[i].maxhp, unavailable2: attackers[i].unavailable, defendersattacked2: attackers[i].defendersattacked.slice(), originalhp2: attackers[i].originalhp, attpoisoned2: attackers[i].attpoisoned, attboosted2: attackers[i].attboosted });
     }
     for (i = 0; i < defenders.length; i++) {
-      backupdefenders.push({ type2: defenders[i].type, d2: defenders[i].d, hp2: defenders[i].hp, maxhp2: defenders[i].maxhp, defbonus2: defenders[i].defbonus, frozen2: defenders[i].frozen });
+      backupdefenders.push({ type2: defenders[i].type, d2: defenders[i].d, hp2: defenders[i].hp, maxhp2: defenders[i].maxhp, defbonus2: defenders[i].defbonus, frozen2: defenders[i].frozen, defpoisoned2: defenders[i].attpoisoned, defboosted2: defenders[i].attboosted });
     }
     messageclear();
     document.getElementById("resultatt").innerHTML = "State saved!";
@@ -1829,10 +2085,10 @@ function loadbackup() {
     attackerselected = -1;
     prevattackerselected = -2;
     for (i = 0; i < backupattackers.length; i++) {
-      attackers.push({ type: backupattackers[i].type2, a: backupattackers[i].a2, hp: backupattackers[i].hp2, maxhp: backupattackers[i].maxhp2, unavailable: backupattackers[i].unavailable2, defendersattacked: backupattackers[i].defendersattacked2.slice(), originalhp: backupattackers[i].originalhp2 });
+      attackers.push({ type: backupattackers[i].type2, a: backupattackers[i].a2, hp: backupattackers[i].hp2, maxhp: backupattackers[i].maxhp2, unavailable: backupattackers[i].unavailable2, defendersattacked: backupattackers[i].defendersattacked2.slice(), originalhp: backupattackers[i].originalhp2, attpoisoned2: backupattackers[i].attpoisoned2, attboosted2: backupattackers[i].attboosted2 });
     }
     for (i = 0; i < backupdefenders.length; i++) {
-      defenders.push({ type: backupdefenders[i].type2, d: backupdefenders[i].d2, hp: backupdefenders[i].hp2, maxhp: backupdefenders[i].maxhp2, defbonus: backupdefenders[i].defbonus2, frozen: backupdefenders[i].frozen2 });
+      defenders.push({ type: backupdefenders[i].type2, d: backupdefenders[i].d2, hp: backupdefenders[i].hp2, maxhp: backupdefenders[i].maxhp2, defbonus: backupdefenders[i].defbonus2, frozen: backupdefenders[i].frozen2, defpoisoned2: backupdefenders[i].defpoisoned2, defboosted2: backupdefenders[i].defboosted2 });
     }
     document.getElementById("attackerlist").innerHTML = "";
     var decshort = "";
